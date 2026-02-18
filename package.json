@@ -1,0 +1,11 @@
+{
+  "name": "openai-codex-example-carousel",
+  "version": "0.2.0",
+  "private": true,
+  "description": "AI-powered carousel slide generator prototype",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check public/app.js"
+  }
+}
