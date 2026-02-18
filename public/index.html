@@ -8,6 +8,7 @@
     <title>AI Carousel Generator</title>
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml" />
+    <title>AI Carousel Generator</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" defer></script>
     <script src="app.js" defer></script>
@@ -36,6 +37,19 @@
           <button type="button" id="installApp" class="secondary-btn hidden">📲 Install App</button>
         </div>
       </div>
+    <header>
+      <div>
+        <h1>AI Carousel Generator</h1>
+        <p>Create, style, reorder, and export stunning carousel slides in minutes.</p>
+      </div>
+      <div class="header-actions">
+        <button type="button" id="modeToggle" class="secondary-btn">🌗 Toggle Mode</button>
+        <button type="button" id="installApp" class="secondary-btn hidden">📲 Install App</button>
+      </div>
+  <body>
+    <header>
+      <h1>AI Carousel Generator</h1>
+      <p>Create, edit, reorder, and export carousel slides in minutes.</p>
     </header>
 
     <main class="layout">
@@ -107,12 +121,14 @@
 
       <section class="card">
         <h2>3) Preview & Reorder</h2>
+        <h2>2) Preview & Reorder</h2>
         <p class="hint">Drag slides to reorder. Select a slide to edit text and image.</p>
         <div id="carousel" class="carousel"></div>
       </section>
 
       <section class="card">
         <h2>4) Edit Slide</h2>
+        <h2>3) Edit Slide</h2>
         <div id="editorEmpty" class="hint">Select a slide to edit its content.</div>
         <form id="editor" class="hidden">
           <label>
@@ -137,6 +153,8 @@
 
       <section class="card full-span">
         <h2>5) Export</h2>
+      <section class="card">
+        <h2>4) Export</h2>
         <div class="export-buttons">
           <button type="button" id="exportPdf">Export PDF</button>
           <button type="button" id="exportCurrentImage">Export Selected Slide PNG</button>

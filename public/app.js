@@ -13,6 +13,7 @@ const exportPdfBtn = document.getElementById("exportPdf");
 const exportCurrentImageBtn = document.getElementById("exportCurrentImage");
 const modeLightBtn = document.getElementById("modeLight");
 const modeDarkBtn = document.getElementById("modeDark");
+const modeToggleBtn = document.getElementById("modeToggle");
 const installAppBtn = document.getElementById("installApp");
 
 const carouselThemeSelect = document.getElementById("carouselTheme");
@@ -62,6 +63,9 @@ function applyAppearance() {
   localStorage.setItem("app:theme", state.theme);
   localStorage.setItem("app:font", state.font);
 }
+let slides = [];
+let selectedSlideId = null;
+let meta = {};
 
 function setStatus(message, isError = false) {
   statusText.textContent = message;
@@ -96,6 +100,7 @@ function renderSlides() {
     card.innerHTML = `
       <span class="slide-index">${index + 1}</span>
       <img src="${slide.imageUrl}" alt="${slide.headline}" loading="lazy" />
+      <img src="${slide.imageUrl}" alt="${slide.headline}" />
       <h3>${slide.headline}</h3>
       <p>${slide.cta}</p>
     `;
@@ -256,6 +261,8 @@ modeLightBtn.addEventListener("click", () => {
 
 modeDarkBtn.addEventListener("click", () => {
   state.mode = "dark";
+modeToggleBtn.addEventListener("click", () => {
+  state.mode = state.mode === "light" ? "dark" : "light";
   applyAppearance();
 });
 
@@ -292,6 +299,7 @@ async function buildSlideCanvas(slide) {
   gradient.addColorStop(1, gradEnd);
 
   ctx.fillStyle = gradient;
+  ctx.fillStyle = "#0f172a";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   try {
@@ -304,6 +312,7 @@ async function buildSlideCanvas(slide) {
     });
 
     ctx.globalAlpha = 0.45;
+    ctx.globalAlpha = 0.35;
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
     ctx.globalAlpha = 1;
   } catch (_err) {
@@ -328,6 +337,16 @@ async function buildSlideCanvas(slide) {
   ctx.fillStyle = "#e2e8f0";
   ctx.font = `700 32px ${fontFamily}`;
   wrapText(ctx, slide.cta, 80, 942, 920, 44);
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 54px Inter, sans-serif";
+  wrapText(ctx, slide.headline, 80, 150, 920, 64);
+
+  ctx.font = "36px Inter, sans-serif";
+  wrapText(ctx, slide.body, 80, 320, 920, 48);
+
+  ctx.fillStyle = "#a5b4fc";
+  ctx.font = "bold 32px Inter, sans-serif";
+  wrapText(ctx, slide.cta, 80, 940, 920, 44);
 
   return canvas;
 }
@@ -385,6 +404,9 @@ exportPdfBtn.addEventListener("click", async () => {
     subject: `Tone: ${meta.tone || "n/a"}; Style: ${meta.imageStyle || "n/a"}; Theme: ${state.theme}; Font: ${state.font}`,
     author: meta.author || "Vibe Coding App",
     keywords: `carousel,ai,${meta.topic || ""},${state.theme},${state.font}`,
+    subject: `Tone: ${meta.tone || "n/a"}; Style: ${meta.imageStyle || "n/a"}; Version: ${meta.version || "n/a"}`,
+    author: meta.author || "Vibe Coding App",
+    keywords: `carousel,ai,${meta.topic || ""}`,
     creator: "Vibe Coding App"
   });
 
@@ -430,4 +452,5 @@ function setFooterYear() {
 
 applyAppearance();
 setFooterYear();
+applyAppearance();
 registerServiceWorker();

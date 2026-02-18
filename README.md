@@ -24,6 +24,12 @@ A responsive, full-stack prototype for generating AI-assisted carousel slides fr
   - Web app manifest (`display: fullscreen`)
   - Service worker for app-shell caching
   - Install prompt handling for supported browsers
+- Carousel preview grid with drag-and-drop reordering.
+- Slide editor for headline, body, CTA, and image replacement URL.
+- Export full carousel to PDF with metadata (`title`, `subject`, `author`, `keywords`, `creator`).
+- Export selected slide as PNG image.
+- Progress indicator and status messaging during generation.
+- Responsive desktop/tablet-first layout.
 - Zero runtime dependencies (runs on Node built-ins only).
 
 ## Quick start
