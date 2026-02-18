@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Carousel Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>AI Carousel Generator</h1>
+      <p>Create, edit, reorder, and export carousel slides in minutes.</p>
+    </header>
+
+    <main class="layout">
+      <section class="card">
+        <h2>1) Generate</h2>
+        <form id="generator-form">
+          <label>
+            Topic
+            <input id="topic" name="topic" required minlength="3" placeholder="e.g. Growth marketing tips" />
+          </label>
+          <label>
+            Tone / Style
+            <select id="tone" name="tone">
+              <option value="professional">Professional</option>
+              <option value="friendly">Friendly</option>
+              <option value="bold">Bold</option>
+              <option value="educational">Educational</option>
+            </select>
+          </label>
+          <label>
+            Image Style
+            <select id="imageStyle" name="imageStyle">
+              <option value="photo">Photo</option>
+              <option value="illustration" selected>Illustration</option>
+              <option value="abstract">Abstract</option>
+            </select>
+          </label>
+          <label>
+            Slide Count
+            <input id="count" name="count" type="number" min="1" max="12" value="5" />
+          </label>
+          <button type="submit" id="generateBtn">Generate Carousel</button>
+        </form>
+
+        <div id="progressWrap" class="hidden">
+          <div class="progress-row">
+            <span id="progressText">Generating...</span>
+            <span id="progressValue">0%</span>
+          </div>
+          <div class="progress">
+            <div id="progressBar"></div>
+          </div>
+        </div>
+        <p id="statusText" class="hint">Ready.</p>
+      </section>
+
+      <section class="card">
+        <h2>2) Preview & Reorder</h2>
+        <p class="hint">Drag slides to reorder. Select a slide to edit text and image.</p>
+        <div id="carousel" class="carousel"></div>
+      </section>
+
+      <section class="card">
+        <h2>3) Edit Slide</h2>
+        <div id="editorEmpty" class="hint">Select a slide to edit its content.</div>
+        <form id="editor" class="hidden">
+          <label>
+            Headline
+            <input id="editHeadline" />
+          </label>
+          <label>
+            Body
+            <textarea id="editBody" rows="4"></textarea>
+          </label>
+          <label>
+            CTA
+            <input id="editCta" />
+          </label>
+          <label>
+            Replace Image URL
+            <input id="editImage" placeholder="https://..." />
+          </label>
+          <button type="button" id="saveSlide">Save Slide</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>4) Export</h2>
+        <div class="export-buttons">
+          <button type="button" id="exportPdf">Export PDF</button>
+          <button type="button" id="exportCurrentImage">Export Selected Slide PNG</button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
