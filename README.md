@@ -8,6 +8,22 @@ A responsive, full-stack prototype for generating AI-assisted carousel slides fr
 - Asynchronous, job-based backend generation flow:
   - `POST /api/generate` creates a generation job.
   - `GET /api/jobs/:jobId` returns progress, status, and completed result.
+- Visual customization controls:
+  - Structured, polished site header and footer layout inspired by research-assistant style app framing.
+  - Light/Dark mode toggle.
+  - Carousel color themes (Aurora, Sunset, Midnight, Mint).
+  - Font selection (Inter, Poppins, Merriweather).
+- Rich slide preview cards with better visual hierarchy and image overlays.
+- Carousel preview grid with drag-and-drop reordering.
+- Slide editor for headline, body, CTA, and image replacement URL.
+- Export full carousel to PDF with metadata (`title`, `subject`, `author`, `keywords`, `creator`) including selected theme/font context.
+- Export selected slide as PNG image.
+- Progress indicator and status messaging during generation.
+- Responsive desktop/tablet-first layout.
+- Installable PWA support:
+  - Web app manifest (`display: fullscreen`)
+  - Service worker for app-shell caching
+  - Install prompt handling for supported browsers
 - Carousel preview grid with drag-and-drop reordering.
 - Slide editor for headline, body, CTA, and image replacement URL.
 - Export full carousel to PDF with metadata (`title`, `subject`, `author`, `keywords`, `creator`).

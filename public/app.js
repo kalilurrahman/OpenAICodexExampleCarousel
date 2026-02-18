@@ -11,6 +11,8 @@ const statusText = document.getElementById("statusText");
 
 const exportPdfBtn = document.getElementById("exportPdf");
 const exportCurrentImageBtn = document.getElementById("exportCurrentImage");
+const modeLightBtn = document.getElementById("modeLight");
+const modeDarkBtn = document.getElementById("modeDark");
 const modeToggleBtn = document.getElementById("modeToggle");
 const installAppBtn = document.getElementById("installApp");
 
@@ -50,6 +52,9 @@ function applyAppearance() {
   document.body.dataset.mode = state.mode;
   document.body.dataset.theme = state.theme;
   document.body.dataset.font = state.font;
+
+  modeLightBtn.classList.toggle("active", state.mode === "light");
+  modeDarkBtn.classList.toggle("active", state.mode === "dark");
 
   carouselThemeSelect.value = state.theme;
   carouselFontSelect.value = state.font;
@@ -249,6 +254,13 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
+modeLightBtn.addEventListener("click", () => {
+  state.mode = "light";
+  applyAppearance();
+});
+
+modeDarkBtn.addEventListener("click", () => {
+  state.mode = "dark";
 modeToggleBtn.addEventListener("click", () => {
   state.mode = state.mode === "light" ? "dark" : "light";
   applyAppearance();
@@ -431,5 +443,14 @@ async function registerServiceWorker() {
   }
 }
 
+function setFooterYear() {
+  const yearEl = document.getElementById("footerYear");
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
+}
+
+applyAppearance();
+setFooterYear();
 applyAppearance();
 registerServiceWorker();

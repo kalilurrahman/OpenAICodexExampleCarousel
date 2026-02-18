@@ -14,6 +14,29 @@
     <script src="app.js" defer></script>
   </head>
   <body data-mode="light" data-theme="aurora" data-font="inter">
+    <header class="site-header">
+      <div class="header-shell">
+        <a href="#" class="brand-block">
+          <span class="brand-kicker">Vibe Studio</span>
+          <span class="brand-title">AI Carousel Generator</span>
+          <span class="brand-subtitle">Create impactful, export-ready social carousels in minutes.</span>
+        </a>
+
+        <nav class="header-nav" aria-label="Primary navigation">
+          <a href="#generator-form">Generate</a>
+          <a href="#carousel">Preview</a>
+          <a href="#editor">Edit</a>
+          <a href="#exportPdf">Export</a>
+        </nav>
+
+        <div class="header-actions">
+          <div class="mode-switch" role="group" aria-label="Display mode switch">
+            <button type="button" id="modeLight" class="mode-btn">☀️ Light</button>
+            <button type="button" id="modeDark" class="mode-btn">🌙 Dark</button>
+          </div>
+          <button type="button" id="installApp" class="secondary-btn hidden">📲 Install App</button>
+        </div>
+      </div>
     <header>
       <div>
         <h1>AI Carousel Generator</h1>
@@ -138,5 +161,20 @@
         </div>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <div class="footer-shell">
+        <div>
+          <p class="footer-title">AI Carousel Generator</p>
+          <p class="footer-subtitle">Powered by async AI generation workflow and instant exports.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#generator-form">Start Creating</a>
+          <a href="#">Privacy</a>
+          <a href="#">Help</a>
+        </div>
+        <p class="footer-copy">© <span id="footerYear"></span> Vibe Studio. All rights reserved.</p>
+      </div>
+    </footer>
   </body>
 </html>
