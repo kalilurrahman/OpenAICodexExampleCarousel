@@ -3,11 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="description" content="AI-powered carousel generator with editable themes, fonts, and exports." />
+    <title>AI Carousel Generator</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml" />
     <title>AI Carousel Generator</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" defer></script>
     <script src="app.js" defer></script>
   </head>
+  <body data-mode="light" data-theme="aurora" data-font="inter">
+    <header>
+      <div>
+        <h1>AI Carousel Generator</h1>
+        <p>Create, style, reorder, and export stunning carousel slides in minutes.</p>
+      </div>
+      <div class="header-actions">
+        <button type="button" id="modeToggle" class="secondary-btn">🌗 Toggle Mode</button>
+        <button type="button" id="installApp" class="secondary-btn hidden">📲 Install App</button>
+      </div>
   <body>
     <header>
       <h1>AI Carousel Generator</h1>
@@ -59,12 +74,37 @@
       </section>
 
       <section class="card">
+        <h2>2) Visual Theme</h2>
+        <form id="appearance-form">
+          <label>
+            Carousel Color Theme
+            <select id="carouselTheme">
+              <option value="aurora" selected>Aurora</option>
+              <option value="sunset">Sunset</option>
+              <option value="midnight">Midnight</option>
+              <option value="mint">Mint</option>
+            </select>
+          </label>
+          <label>
+            Carousel Font
+            <select id="carouselFont">
+              <option value="inter" selected>Inter</option>
+              <option value="poppins">Poppins</option>
+              <option value="merriweather">Merriweather</option>
+            </select>
+          </label>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>3) Preview & Reorder</h2>
         <h2>2) Preview & Reorder</h2>
         <p class="hint">Drag slides to reorder. Select a slide to edit text and image.</p>
         <div id="carousel" class="carousel"></div>
       </section>
 
       <section class="card">
+        <h2>4) Edit Slide</h2>
         <h2>3) Edit Slide</h2>
         <div id="editorEmpty" class="hint">Select a slide to edit its content.</div>
         <form id="editor" class="hidden">
@@ -88,6 +128,8 @@
         </form>
       </section>
 
+      <section class="card full-span">
+        <h2>5) Export</h2>
       <section class="card">
         <h2>4) Export</h2>
         <div class="export-buttons">

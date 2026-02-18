@@ -11,12 +11,53 @@ const statusText = document.getElementById("statusText");
 
 const exportPdfBtn = document.getElementById("exportPdf");
 const exportCurrentImageBtn = document.getElementById("exportCurrentImage");
+const modeToggleBtn = document.getElementById("modeToggle");
+const installAppBtn = document.getElementById("installApp");
+
+const carouselThemeSelect = document.getElementById("carouselTheme");
+const carouselFontSelect = document.getElementById("carouselFont");
 
 const editHeadline = document.getElementById("editHeadline");
 const editBody = document.getElementById("editBody");
 const editCta = document.getElementById("editCta");
 const editImage = document.getElementById("editImage");
 
+const themePalette = {
+  aurora: ["#7c3aed", "#06b6d4"],
+  sunset: ["#ef4444", "#f59e0b"],
+  midnight: ["#1d4ed8", "#312e81"],
+  mint: ["#10b981", "#14b8a6"]
+};
+
+const fontMap = {
+  inter: "Inter, system-ui, sans-serif",
+  poppins: "Poppins, system-ui, sans-serif",
+  merriweather: "Merriweather, Georgia, serif"
+};
+
+let slides = [];
+let selectedSlideId = null;
+let meta = {};
+let deferredPrompt;
+
+const state = {
+  mode: localStorage.getItem("app:mode") || "light",
+  theme: localStorage.getItem("app:theme") || "aurora",
+  font: localStorage.getItem("app:font") || "inter"
+};
+
+function applyAppearance() {
+  document.body.dataset.mode = state.mode;
+  document.body.dataset.theme = state.theme;
+  document.body.dataset.font = state.font;
+
+  carouselThemeSelect.value = state.theme;
+  carouselFontSelect.value = state.font;
+
+  localStorage.setItem("app:mode", state.mode);
+  localStorage.setItem("app:theme", state.theme);
+  localStorage.setItem("app:font", state.font);
+}
 let slides = [];
 let selectedSlideId = null;
 let meta = {};
@@ -53,6 +94,7 @@ function renderSlides() {
 
     card.innerHTML = `
       <span class="slide-index">${index + 1}</span>
+      <img src="${slide.imageUrl}" alt="${slide.headline}" loading="lazy" />
       <img src="${slide.imageUrl}" alt="${slide.headline}" />
       <h3>${slide.headline}</h3>
       <p>${slide.cta}</p>
@@ -207,6 +249,23 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
+modeToggleBtn.addEventListener("click", () => {
+  state.mode = state.mode === "light" ? "dark" : "light";
+  applyAppearance();
+});
+
+carouselThemeSelect.addEventListener("change", (event) => {
+  state.theme = event.target.value;
+  applyAppearance();
+  setStatus(`Theme switched to ${state.theme}.`);
+});
+
+carouselFontSelect.addEventListener("change", (event) => {
+  state.font = event.target.value;
+  applyAppearance();
+  setStatus(`Font switched to ${state.font}.`);
+});
+
 function downloadBlob(blob, filename) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -222,6 +281,12 @@ async function buildSlideCanvas(slide) {
   canvas.height = 1080;
   const ctx = canvas.getContext("2d");
 
+  const [gradStart, gradEnd] = themePalette[state.theme] || themePalette.aurora;
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  gradient.addColorStop(0, gradStart);
+  gradient.addColorStop(1, gradEnd);
+
+  ctx.fillStyle = gradient;
   ctx.fillStyle = "#0f172a";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -234,6 +299,7 @@ async function buildSlideCanvas(slide) {
       img.src = slide.imageUrl;
     });
 
+    ctx.globalAlpha = 0.45;
     ctx.globalAlpha = 0.35;
     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
     ctx.globalAlpha = 1;
@@ -241,6 +307,24 @@ async function buildSlideCanvas(slide) {
     // graceful fallback if image fails to load
   }
 
+  const shade = ctx.createLinearGradient(0, canvas.height * 0.3, 0, canvas.height);
+  shade.addColorStop(0, "rgba(2, 6, 23, 0)");
+  shade.addColorStop(1, "rgba(2, 6, 23, 0.75)");
+  ctx.fillStyle = shade;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const fontFamily = fontMap[state.font] || fontMap.inter;
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = `700 58px ${fontFamily}`;
+  wrapText(ctx, slide.headline, 80, 150, 920, 64);
+
+  ctx.font = `400 34px ${fontFamily}`;
+  wrapText(ctx, slide.body, 80, 320, 920, 46);
+
+  ctx.fillStyle = "#e2e8f0";
+  ctx.font = `700 32px ${fontFamily}`;
+  wrapText(ctx, slide.cta, 80, 942, 920, 44);
   ctx.fillStyle = "#ffffff";
   ctx.font = "bold 54px Inter, sans-serif";
   wrapText(ctx, slide.headline, 80, 150, 920, 64);
@@ -305,6 +389,9 @@ exportPdfBtn.addEventListener("click", async () => {
 
   doc.setProperties({
     title: `${meta.topic || "AI Carousel"} Carousel`,
+    subject: `Tone: ${meta.tone || "n/a"}; Style: ${meta.imageStyle || "n/a"}; Theme: ${state.theme}; Font: ${state.font}`,
+    author: meta.author || "Vibe Coding App",
+    keywords: `carousel,ai,${meta.topic || ""},${state.theme},${state.font}`,
     subject: `Tone: ${meta.tone || "n/a"}; Style: ${meta.imageStyle || "n/a"}; Version: ${meta.version || "n/a"}`,
     author: meta.author || "Vibe Coding App",
     keywords: `carousel,ai,${meta.topic || ""}`,
@@ -314,3 +401,35 @@ exportPdfBtn.addEventListener("click", async () => {
   doc.save(`carousel-${Date.now()}.pdf`);
   setStatus("Carousel exported as PDF.");
 });
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  deferredPrompt = event;
+  installAppBtn.classList.remove("hidden");
+});
+
+installAppBtn.addEventListener("click", async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  installAppBtn.classList.add("hidden");
+});
+
+window.addEventListener("appinstalled", () => {
+  setStatus("App installed successfully. Launch from your home screen.");
+  installAppBtn.classList.add("hidden");
+});
+
+async function registerServiceWorker() {
+  if ("serviceWorker" in navigator) {
+    try {
+      await navigator.serviceWorker.register("/service-worker.js");
+    } catch (_error) {
+      // ignore SW registration failures in unsupported contexts
+    }
+  }
+}
+
+applyAppearance();
+registerServiceWorker();
