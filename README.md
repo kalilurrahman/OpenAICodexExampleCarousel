@@ -20,6 +20,7 @@ A responsive, full-stack prototype for generating AI-assisted carousel slides fr
 - Export selected slide as PNG image.
 - Progress indicator and status messaging during generation.
 - Responsive desktop/tablet-first layout.
+- Localhost-safe behavior: service-worker caches are auto-cleared/disabled in local dev to prevent stale broken layouts.
 - Installable PWA support:
   - Web app manifest (`display: fullscreen`)
   - Service worker for app-shell caching

@@ -433,6 +433,35 @@ window.addEventListener("appinstalled", () => {
   installAppBtn.classList.add("hidden");
 });
 
+async function clearLegacyServiceWorkersForLocalhost() {
+  if (!("serviceWorker" in navigator)) return;
+  const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+  if (!isLocalhost) return;
+
+  const registrations = await navigator.serviceWorker.getRegistrations();
+  await Promise.all(registrations.map((registration) => registration.unregister()));
+
+  if ("caches" in window) {
+    const keys = await caches.keys();
+    await Promise.all(keys.map((key) => caches.delete(key)));
+  }
+}
+
+async function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+
+  await clearLegacyServiceWorkersForLocalhost();
+
+  const isLocalhost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+  if (isLocalhost) {
+    setStatus("Local mode: service worker cache disabled to avoid stale UI.");
+    return;
+  }
+
+  try {
+    await navigator.serviceWorker.register("/service-worker.js", { updateViaCache: "none" });
+  } catch (_error) {
+    // ignore SW registration failures in unsupported contexts
 async function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
     try {
