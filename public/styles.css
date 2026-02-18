@@ -4,6 +4,10 @@
   --bg: #f6f8ff;
   --bg-elevated: #ffffff;
   --text: #111827;
+:root {
+  --bg: #f6f8ff;
+  --card: #ffffff;
+  --text: #1f2937;
   --muted: #6b7280;
   --primary: #4f46e5;
   --danger: #b91c1c;
@@ -153,6 +157,33 @@ body {
   background: linear-gradient(90deg, var(--theme-grad-a), var(--theme-grad-b));
   color: #fff;
 }
+header {
+  padding: 1.2rem 1rem 0.6rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+header h1 { margin: 0; font-size: 1.8rem; }
+header p { color: var(--muted); margin: 0.45rem 0 0; }
+.header-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+header {
+  padding: 1.25rem 1rem 0.5rem;
+  text-align: center;
+}
+header h1 { margin: 0; }
+header p { color: var(--muted); }
 
 .layout {
   max-width: 1200px;
@@ -199,6 +230,29 @@ button:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
   border: 1px solid var(--border);
 }
 
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+}
+.card h2 { margin-top: 0; font-size: 1.1rem; }
+form { display: grid; gap: 0.75rem; }
+label { display: grid; gap: 0.35rem; font-weight: 600; font-size: 0.92rem; }
+input, select, textarea, button {
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+}
+button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+button:hover { opacity: 0.92; }
+button:disabled { opacity: 0.6; cursor: not-allowed; }
 .hint { color: var(--muted); font-size: 0.9rem; }
 .hint.error { color: var(--danger); font-weight: 600; }
 .hidden { display: none !important; }
@@ -213,6 +267,7 @@ button:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
   width: 100%;
   height: 8px;
   background: color-mix(in srgb, var(--border) 80%, black 20%);
+  background: #e5e7eb;
   border-radius: 999px;
   overflow: hidden;
   margin-top: 0.35rem;
@@ -221,6 +276,7 @@ button:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
   width: 0%;
   height: 100%;
   background: linear-gradient(90deg, var(--theme-grad-a), var(--theme-grad-b));
+  background: linear-gradient(90deg, #6366f1, #22d3ee);
   transition: width 0.2s linear;
 }
 
@@ -228,6 +284,8 @@ button:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 0.85rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
 }
 .slide-card {
   position: relative;
@@ -263,6 +321,26 @@ button:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
   backdrop-filter: blur(3px);
   z-index: 2;
 }
+  border-radius: 10px;
+  padding: 0.5rem;
+  background: #fbfdff;
+  cursor: grab;
+}
+.slide-index {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 23, 42, 0.75);
+  color: white;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+.slide-card.selected { outline: 2px solid var(--primary); }
 .slide-card img {
   width: 100%;
   aspect-ratio: 1/1;
@@ -345,4 +423,23 @@ button:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
   }
   .footer-copy { justify-self: start; }
   .footer-links { justify-content: flex-start; }
+@media (max-width: 900px) {
+  header { flex-direction: column; }
+  .layout { grid-template-columns: 1fr; }
+  .full-span { grid-column: auto; }
+  border-radius: 8px;
+}
+.slide-card h3 {
+  margin: 0.45rem 0 0.25rem;
+  font-size: 0.95rem;
+}
+.slide-card p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.export-buttons { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
 }
